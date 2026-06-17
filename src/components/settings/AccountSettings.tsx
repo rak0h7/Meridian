@@ -32,8 +32,8 @@ export function AccountSettings() {
           <h3 className={ui.sectionTitle}>Account & cloud sync</h3>
           <p className={`${ui.sectionSub} mt-1`}>
             {configured
-              ? "Sign in to back up and restore your Meridian data across devices."
-              : "Add Supabase keys to enable cloud accounts."}
+              ? "Your Meridian data is backed up and synced to your account."
+              : "Add Supabase keys to enable accounts."}
           </p>
         </div>
       </div>
@@ -61,7 +61,7 @@ export function AccountSettings() {
         ) : (
           <Link href="/auth/login" className={cn(ui.btnPrimary, "inline-flex text-xs")}>
             <LogIn className="mr-1.5 h-3.5 w-3.5" />
-            Sign in to enable cloud sync
+            Sign in
           </Link>
         )}
       </div>

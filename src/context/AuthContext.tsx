@@ -6,12 +6,17 @@ import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { pullUserData, pushUserData } from "@/lib/cloudSync";
 
+interface AuthResult {
+  error: string | null;
+  session?: boolean;
+}
+
 interface AuthContextValue {
   configured: boolean;
   user: User | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (email: string, password: string) => Promise<AuthResult>;
+  signUp: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
   syncNow: () => Promise<{ error: string | null }>;
 }
@@ -88,8 +93,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = useCallback(
     async (email: string, password: string) => {
       if (!supabase) return { error: "Cloud sync is not configured" };
-      const { error } = await supabase.auth.signUp({ email, password });
-      return { error: error?.message ?? null };
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      return { error: error?.message ?? null, session: Boolean(data.session) };
     },
     [supabase]
   );
@@ -99,6 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (user) await pushUserData(supabase, user.id);
     await supabase.auth.signOut();
     setUser(null);
+    window.location.href = "/auth/login";
   }, [supabase, user]);
 
   return (

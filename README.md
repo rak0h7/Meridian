@@ -40,8 +40,9 @@ Repo: `https://github.com/rak0h7/Meridian`
 3. Deploy — Vercel auto-detects Next.js 16
 4. After first deploy, update Supabase **Site URL** and add your Vercel **Redirect URL** (step 3 above)
 
-## Cloud sync
+## Authentication
 
-- Works without an account (local storage only)
-- Sign in via **Settings → Account & cloud sync** to back up data to Supabase
-- Modules synced: labs, cycle, gym, nutrition, settings
+- Sign-in is **required** to use the app (email + password via Supabase)
+- Routes: `/auth/login`, `/auth/signup`
+- Data syncs automatically while signed in (labs, cycle, gym, nutrition, settings)
+- Sign out via **Settings → Account & cloud sync**

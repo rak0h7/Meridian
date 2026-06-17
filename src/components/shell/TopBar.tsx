@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Search, Settings2 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import { useNavigation, NAV_ITEMS } from "@/context/NavigationContext";
 import { useSettings } from "@/context/SettingsContext";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ const ACCENT: Record<string, string> = {
 const FADE_DISTANCE = 56;
 
 export function TopBar() {
+  const { user } = useAuth();
   const { route, setCommandOpen, setRoute } = useNavigation();
   const { theme, reducedMotion } = useSettings();
   const current = NAV_ITEMS.find((n) => n.id === route);
@@ -91,6 +93,16 @@ export function TopBar() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          {user?.email && (
+            <button
+              type="button"
+              onClick={() => setRoute("settings")}
+              className="hidden max-w-[140px] truncate rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-surface)] px-2.5 py-1.5 text-[11px] text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:block"
+              title={user.email}
+            >
+              {user.email.split("@")[0]}
+            </button>
+          )}
           <button
             type="button"
             onClick={() => setCommandOpen(true)}

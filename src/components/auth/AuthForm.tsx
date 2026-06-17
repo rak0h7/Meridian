@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { ui } from "@/lib/ui";
@@ -10,9 +10,13 @@ import { ui } from "@/lib/ui";
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const { signIn, signUp, configured } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") ?? "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    searchParams.get("error") === "auth" ? "Sign-in link expired or invalid. Try again." : null
+  );
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -34,11 +38,16 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     }
 
     if (mode === "signup") {
-      setMessage("Account created. Check your email if confirmation is required, then sign in.");
+      if (result.session) {
+        router.push(next);
+        router.refresh();
+        return;
+      }
+      setMessage("Account created. Check your email to confirm, then sign in.");
       return;
     }
 
-    router.push("/");
+    router.push(next);
     router.refresh();
   };
 
@@ -46,11 +55,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     return (
       <div className={cn(ui.card, ui.cardPad, "text-center")}>
         <p className="text-sm text-[var(--muted)]">
-          Supabase environment variables are not set. Add them to deploy with cloud sync.
+          Supabase environment variables are not set. Copy{" "}
+          <code className="rounded bg-[var(--bg-elevated)] px-1.5 py-0.5 text-xs">.env.example</code>{" "}
+          to <code className="rounded bg-[var(--bg-elevated)] px-1.5 py-0.5 text-xs">.env.local</code>{" "}
+          and add your project URL and anon key.
         </p>
-        <Link href="/" className={cn(ui.btnSecondary, "mt-4 inline-flex")}>
-          Back to app
-        </Link>
       </div>
     );
   }
