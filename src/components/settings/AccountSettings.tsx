@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { ui } from "@/lib/ui";
 
 export function AccountSettings() {
-  const { configured, user, loading, signOut, syncNow } = useAuth();
+  const { configured, user, accountName, loading, signOut, syncNow } = useAuth();
   const { toast } = useToast();
 
   const handleSync = async () => {
@@ -32,7 +32,7 @@ export function AccountSettings() {
           <h3 className={ui.sectionTitle}>Account & cloud sync</h3>
           <p className={`${ui.sectionSub} mt-1`}>
             {configured
-              ? "Your Meridian data is backed up and synced to your account."
+              ? "Private access-key account — no email, synced across devices."
               : "Add Supabase keys to enable accounts."}
           </p>
         </div>
@@ -44,7 +44,10 @@ export function AccountSettings() {
         ) : user ? (
           <div className="space-y-3">
             <p className="text-sm text-[var(--foreground)]">
-              Signed in as <span className="font-medium">{user.email}</span>
+              Signed in as <span className="font-medium">{accountName ?? "Account"}</span>
+            </p>
+            <p className="text-[11px] text-[var(--muted)]">
+              Your access key is not stored here. Keep your saved key to sign in again.
             </p>
             <div className="flex flex-wrap gap-2">
               <button type="button" onClick={handleSync} className={cn(ui.btnSecondary, "text-xs")}>

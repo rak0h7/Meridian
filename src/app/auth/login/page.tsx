@@ -10,7 +10,7 @@ export default function LoginPage() {
         <div className="text-center">
           <span className="font-display text-2xl font-semibold text-gradient">Meridian</span>
           <h1 className={`${ui.pageTitle} mt-3`}>Sign in</h1>
-          <p className={ui.pageSub}>Labs, protocol, training, and nutrition — synced to your account.</p>
+          <p className={ui.pageSub}>Enter your private access key. No email required.</p>
         </div>
         <Suspense fallback={<div className="h-48 animate-pulse rounded-[var(--radius-lg)] bg-[var(--bg-elevated)]" />}>
           <AuthForm mode="login" />

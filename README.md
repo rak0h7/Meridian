@@ -2,11 +2,19 @@
 
 Labs, protocol, training, and nutrition — one health command center.
 
+## Authentication (access key)
+
+Meridian uses **private access keys** — no email, no verification links.
+
+1. **Create account** → generates a key like `meridian_k7xm_9p2q_rn4w_h8tj`
+2. **Save it immediately** — shown once, cannot be recovered
+3. **Sign in** → paste your key
+
 ## Local development
 
 ```bash
 cd /path/to/clone3
-cp .env.example .env.local   # add your Supabase anon key
+cp .env.example .env.local   # add anon + service_role keys
 npm install
 npm run dev                    # http://localhost:1337
 ```
@@ -15,34 +23,25 @@ npm run dev                    # http://localhost:1337
 
 Project: `https://tfcplpxcorcqbjqbukem.supabase.co`
 
-1. Open [SQL Editor](https://supabase.com/dashboard/project/tfcplpxcorcqbjqbukem/sql/new) → paste and run `supabase/schema.sql`
-2. **Authentication → Providers** → enable **Email** (confirm email optional for dev)
-3. **Authentication → URL Configuration**:
-   - **Site URL**: your production URL (e.g. `https://meridian.vercel.app`) or `http://localhost:1337` for local dev
-   - **Redirect URLs** (add both):
-     - `http://localhost:1337/auth/callback`
-     - `https://<your-vercel-domain>/auth/callback`
-4. **Project Settings → API** → copy **anon public** key into `.env.local`:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://tfcplpxcorcqbjqbukem.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
-```
+1. [SQL Editor](https://supabase.com/dashboard/project/tfcplpxcorcqbjqbukem/sql/new) → run `supabase/schema.sql`
+2. **Authentication → Providers** → disable email signups (optional; keys are used instead)
+3. Copy keys from **Project Settings → API** into `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (anon public)
+   - `SUPABASE_SERVICE_ROLE_KEY` (server only)
 
 ## Deploy (Vercel + GitHub)
 
 Repo: `https://github.com/rak0h7/Meridian`
 
-1. Import the repo at [vercel.com/new](https://vercel.com/new)
-2. Add environment variables (same as `.env.local`):
+1. Import at [vercel.com/new](https://vercel.com/new)
+2. Environment variables:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` (required for key auth API routes)
 3. Deploy — Vercel auto-detects Next.js 16
-4. After first deploy, update Supabase **Site URL** and add your Vercel **Redirect URL** (step 3 above)
 
-## Authentication
+## Cloud sync
 
-- Sign-in is **required** to use the app (email + password via Supabase)
-- Routes: `/auth/login`, `/auth/signup`
-- Data syncs automatically while signed in (labs, cycle, gym, nutrition, settings)
-- Sign out via **Settings → Account & cloud sync**
+- Sign-in required (access key)
+- Data syncs automatically while signed in
+- Modules: labs, cycle, gym, nutrition, settings

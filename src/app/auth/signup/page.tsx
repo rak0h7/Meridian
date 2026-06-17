@@ -10,7 +10,7 @@ export default function SignupPage() {
         <div className="text-center">
           <span className="font-display text-2xl font-semibold text-gradient">Meridian</span>
           <h1 className={`${ui.pageTitle} mt-3`}>Create account</h1>
-          <p className={ui.pageSub}>Your data stays private — secured with row-level access in Supabase.</p>
+          <p className={ui.pageSub}>Generate a one-time access key. Save it — it cannot be recovered.</p>
         </div>
         <Suspense fallback={<div className="h-48 animate-pulse rounded-[var(--radius-lg)] bg-[var(--bg-elevated)]" />}>
           <AuthForm mode="signup" />

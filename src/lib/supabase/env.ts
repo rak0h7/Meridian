@@ -10,9 +10,19 @@ export function getSupabaseAnonKey(): string {
   return key;
 }
 
+export function getSupabaseServiceRoleKey(): string {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!key) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
+  return key;
+}
+
 export function isSupabaseConfigured(): boolean {
   return Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
+}
+
+export function isAuthServerConfigured(): boolean {
+  return isSupabaseConfigured() && Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
 }

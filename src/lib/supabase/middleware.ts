@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseAnonKey, getSupabaseUrl, isSupabaseConfigured } from "@/lib/supabase/env";
 
-const AUTH_ROUTES = ["/auth/login", "/auth/signup", "/auth/callback"];
+const AUTH_ROUTES = ["/auth/login", "/auth/signup", "/api/auth"];
 
 function isAuthRoute(pathname: string) {
   return AUTH_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
