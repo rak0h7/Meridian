@@ -5,7 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { pullUserData, pushUserData } from "@/lib/cloudSync";
-import { accountLabel } from "@/lib/accessKey";
+import { accountLabel } from "@/lib/accessKey.shared";
 
 interface AuthResult {
   error: string | null;

@@ -1,5 +1,7 @@
+import "server-only";
 import { createHash, randomBytes, scrypt, timingSafeEqual } from "crypto";
 import { promisify } from "util";
+import { normalizeAccessKey } from "@/lib/accessKey.shared";
 
 const scryptAsync = promisify(scrypt);
 const ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
@@ -17,10 +19,6 @@ export function generateAccessKey(): string {
   }
 
   return `meridian_${groups.join("_")}`;
-}
-
-export function normalizeAccessKey(raw: string): string {
-  return raw.trim().toLowerCase().replace(/\s+/g, "");
 }
 
 export function fingerprintAccessKey(key: string): string {
@@ -45,10 +43,4 @@ export async function verifyAccessKey(key: string, stored: string): Promise<bool
   return timingSafeEqual(actual, expected);
 }
 
-export function internalEmail(userId: string): string {
-  return `${userId}@users.meridian.internal`;
-}
-
-export function accountLabel(fingerprint: string): string {
-  return `Account ···${fingerprint.slice(-4)}`;
-}
+export { normalizeAccessKey, internalEmail } from "@/lib/accessKey.shared";

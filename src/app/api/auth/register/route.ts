@@ -5,7 +5,7 @@ import {
   generateAccessKey,
   hashAccessKey,
   internalEmail,
-} from "@/lib/accessKey";
+} from "@/lib/accessKey.server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAuthServerConfigured } from "@/lib/supabase/env";
 
