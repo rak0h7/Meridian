@@ -13,19 +13,32 @@ npm run dev                    # http://localhost:1337
 
 ## Supabase setup
 
-1. Open [Supabase SQL Editor](https://supabase.com/dashboard/project/tfcplpxcorcqbjqbukem/sql/new)
-2. Paste and run `supabase/schema.sql`
-3. In **Authentication → Providers**, enable Email
-4. Copy **Project URL** and **anon public key** into `.env.local`
+Project: `https://tfcplpxcorcqbjqbukem.supabase.co`
+
+1. Open [SQL Editor](https://supabase.com/dashboard/project/tfcplpxcorcqbjqbukem/sql/new) → paste and run `supabase/schema.sql`
+2. **Authentication → Providers** → enable **Email** (confirm email optional for dev)
+3. **Authentication → URL Configuration**:
+   - **Site URL**: your production URL (e.g. `https://meridian.vercel.app`) or `http://localhost:1337` for local dev
+   - **Redirect URLs** (add both):
+     - `http://localhost:1337/auth/callback`
+     - `https://<your-vercel-domain>/auth/callback`
+4. **Project Settings → API** → copy **anon public** key into `.env.local`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tfcplpxcorcqbjqbukem.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+```
 
 ## Deploy (Vercel + GitHub)
 
-1. Push this repo to `https://github.com/rak0h7/Meridian`
-2. Import the repo in [Vercel](https://vercel.com/new)
-3. Add environment variables:
+Repo: `https://github.com/rak0h7/Meridian`
+
+1. Import the repo at [vercel.com/new](https://vercel.com/new)
+2. Add environment variables (same as `.env.local`):
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-4. Deploy — Vercel auto-detects Next.js
+3. Deploy — Vercel auto-detects Next.js 16
+4. After first deploy, update Supabase **Site URL** and add your Vercel **Redirect URL** (step 3 above)
 
 ## Cloud sync
 
